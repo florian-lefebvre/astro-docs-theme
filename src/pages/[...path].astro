@@ -1,0 +1,23 @@
+---
+import DocsLayout from '~/layouts/DocsLayout.astro'
+
+const files = (await Astro.glob('../content/**/*.md')).map((e) => {
+    const r = { ...e }
+    r.file = r.file.split('src/content')[1]
+    return r
+})
+
+export function getStaticPaths() {
+    return [{ params: { path: 'one/two/three' } }, { params: { path: 'four' } }]
+}
+
+const { path } = Astro.params
+
+const C = files[0].Content
+---
+
+<DocsLayout>
+    <h1>{path}</h1>
+    <pre>{JSON.stringify(files, null, 2)}</pre>
+    <C />
+</DocsLayout>
